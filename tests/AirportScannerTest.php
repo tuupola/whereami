@@ -25,10 +25,10 @@ class AirportScannerTest extends TestCase
         $this->assertTrue(true);
     }
 
-    public function testShouldParse()
+    public function testShouldScanAndParse()
     {
-        $output = file(__DIR__ . "/changi.txt");
-        $result = (new AirportScanner())->parse($output);
+        $command = "/bin/cat " . __DIR__ . "/changi.txt";
+        $result = (new AirportScanner($command))->scan();
         $this->assertEquals(8, count($result));
         $this->assertEquals("MTN-MobileWiFi 68", $result[0]["name"]);
         $this->assertEquals("44:6e:e5:73:28:51", $result[0]["address"]);

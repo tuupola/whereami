@@ -40,7 +40,7 @@ final class AirportScanner implements Scanner
         return $this->parse($output);
     }
 
-    public function parse(array $output)
+    private function parse(array $output)
     {
         array_shift($output);
         return array_map(function ($line) {

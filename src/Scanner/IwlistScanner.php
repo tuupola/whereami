@@ -37,7 +37,7 @@ final class IwListScanner implements Scanner
         return $this->parse($output);
     }
 
-    public function parse(array $output)
+    private function parse(array $output)
     {
         $current = -1;
         $networks = [];
