@@ -25,9 +25,14 @@ class IwListScannerTest extends TestCase
         $this->assertTrue(true);
     }
 
-    public function testShouldScan()
+    public function testShouldParse()
     {
-        $data = (new IwListScanner())->scan();
-        print_r($data);
+        $output = file(__DIR__ . "/iwlist.txt");
+        $result = (new IwListScanner())->parse($output);
+        $this->assertEquals(17, count($result));
+        $this->assertEquals("TRENDnet 712", $result[5]["name"]);
+        $this->assertEquals("D8:EB:97:17:EB:8F", $result[5]["address"]);
+        $this->assertEquals(-74, $result[5]["signal"]);
+        $this->assertEquals(6, $result[5]["channel"]);
     }
 }
