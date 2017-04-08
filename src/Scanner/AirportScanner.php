@@ -21,6 +21,11 @@ final class AirportScanner implements Scanner
 {
     private $command;
 
+    const REGEXP_SSID = "(?<ssid>.*)";
+    const REGEXP_BSSID = "\s+(?<bssid>([0-9A-Fa-f]{2}[:-]){5}([0-9A-Fa-f]{2}))";
+    const REGEXP_SIGNAL = "\s+(?<signal>-\d+)";
+    const REGEXP_CHANNEL = "\s+(?<channel>\d+)";
+
     public function __construct(
         $command =
         "/System/Library/PrivateFrameworks/Apple80211.framework/Versions" .
@@ -35,20 +40,21 @@ final class AirportScanner implements Scanner
         return $this->parse($output);
     }
 
-    private function parse(array $output)
+    public function parse(array $output)
     {
         array_shift($output);
         return array_map(function ($line) {
-            $data = preg_split("/\s+/", $line);
-            /* Airport sometimes return 157,+1 style channels. */
-            preg_match("/^(\d+)/", $data[4], $matches);
-            $channel = $matches[0];
+            $regexp = self::REGEXP_SSID
+                    . self::REGEXP_BSSID
+                    . self::REGEXP_SIGNAL
+                    . self::REGEXP_CHANNEL;
 
+            preg_match("/{$regexp}/", $line, $matches);
             return [
-                "name" => $data[1], // SSID
-                "address" => $data[2], // BSSID
-                "signal" => $data[3], // RSSI
-                "channel" => $channel,
+                "name" => trim($matches["ssid"]),
+                "address" => $matches["bssid"],
+                "signal" => $matches["signal"],
+                "channel" => $matches["channel"],
             ];
         }, $output);
     }

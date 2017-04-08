@@ -1,0 +1,9 @@
+                            SSID BSSID             RSSI CHANNEL HT CC SECURITY (auth/unicast/group)
+               MTN-MobileWiFi 68 44:6e:e5:73:28:51 -89  10      Y  -- WPA2(PSK/AES/AES)
+                    #WiFi@Changi 10:bd:18:f0:64:3c -84  40      Y  SG NONE
+                    #WiFi@Changi 08:cc:68:db:c6:a3 -74  1       Y  SG NONE
+                    #WiFi@Changi 10:bd:18:c6:bc:33 -69  11      Y  SG NONE
+                    #WiFi@Changi 10:bd:18:f0:ac:23 -86  6       Y  SG NONE
+                         JK_Omie f2:db:e2:84:2d:ce -66  1       Y  SG WPA2(PSK/AES/AES)
+                    #WiFi@Changi 10:bd:18:5f:e9:8c -67  44      Y  SG NONE
+                    #WiFi@Changi 10:bd:18:c6:bc:3c -67  157     Y  SG NONE
