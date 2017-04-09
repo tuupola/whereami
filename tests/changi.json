@@ -1,0 +1,44 @@
+[
+    {
+        "name": "#WiFi@Changi",
+        "address": "64:d8:14:72:60:0c",
+        "signal": "-90",
+        "channel": "149"
+    },
+    {
+        "name": "#WiFi@Changi",
+        "address": "10:bd:18:5f:e9:83",
+        "signal": "-70",
+        "channel": "6"
+    },
+    {
+        "name": "#WiFi@Changi",
+        "address": "10:bd:18:c6:bc:33",
+        "signal": "-71",
+        "channel": "11"
+    },
+    {
+        "name": "Piggy",
+        "address": "4e:66:41:0b:40:5c",
+        "signal": "-58",
+        "channel": "4"
+    },
+    {
+        "name": "#WiFi@Changi",
+        "address": "10:bd:18:5f:e9:8c",
+        "signal": "-69",
+        "channel": "44"
+    },
+    {
+        "name": "#WiFi@Changi",
+        "address": "10:bd:18:f0:64:3c",
+        "signal": "-85",
+        "channel": "40"
+    },
+    {
+        "name": "#WiFi@Changi",
+        "address": "10:bd:18:c6:bc:3c",
+        "signal": "-65",
+        "channel": "157"
+    }
+]

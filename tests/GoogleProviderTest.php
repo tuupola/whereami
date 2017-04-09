@@ -15,11 +15,21 @@
 
 namespace Whereami;
 
+use Http\Discovery\HttpClientDiscovery;
+use Http\Discovery\Strategy\MockClientStrategy;
+use Http\Mock\Client as MockClient;
 use PHPUnit\Framework\TestCase;
 use Whereami\Provider\GoogleProvider;
+use Zend\Diactoros\Response;
+use Zend\Diactoros\Stream;
 
 class GoogleProviderTest extends TestCase
 {
+    public function setUp()
+    {
+        HttpClientDiscovery::prependStrategy(MockClientStrategy::class);
+    }
+
     public function testShouldBeTrue()
     {
         $this->assertTrue(true);
@@ -33,26 +43,21 @@ class GoogleProviderTest extends TestCase
 
     public function testShouldProcess()
     {
-        if (false === $key = getenv("WHEREAMI_GOOGLE_KEY")) {
-            $this->markTestSkipped("Google API key not set.");
-        }
+        $stream = new Stream("php://memory", "rb+");
+        $stream->write('{"location": {"lat": 1.358496,"lng": 103.989834}, "accuracy": 100.0}');
+        $response = new Response($stream);
 
-        $location = (new GoogleProvider($key))->process([
-            [
-                "name" => "CrownePlaza",
-                "address" => "54:3d:37:2e:60:88",
-                "signal" => -71,
-                "channel" => 1,
-            ],
-            [
-                "name" => "Boingo",
-                "address" => "54:3d:37:ae:60:88",
-                "signal" => -73,
-                "channel" => 1,
-            ],
-        ]);
-        $this->assertArrayHasKey("latitude", $location);
-        $this->assertArrayHasKey("longitude", $location);
-        $this->assertArrayHasKey("accuracy", $location);
+        $mockClient = new MockCLient;
+        $mockClient->addResponse($response);
+        $httpClient = (new HttpClientFactory($mockClient))->create();
+
+        $networks = file_get_contents(__DIR__ . "/changi.json");
+        $networks = json_decode($networks, true);
+
+        $location = (new GoogleProvider("fakekey", $httpClient))->process($networks);
+
+        $this->assertEquals(1.358496, $location["latitude"]);
+        $this->assertEquals(103.989834, $location["longitude"]);
+        $this->assertEquals(100, $location["accuracy"]);
     }
 }
