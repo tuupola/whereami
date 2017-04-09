@@ -40,20 +40,24 @@ final class AirportScanner implements Scanner
 
     private function parse(array $output)
     {
-        array_shift($output);
-        return array_map(function ($line) {
+        $output = array_map(function ($line) {
             $regexp = self::REGEXP_SSID
                     . self::REGEXP_BSSID
                     . self::REGEXP_SIGNAL
                     . self::REGEXP_CHANNEL;
 
             preg_match("/{$regexp}/", $line, $matches);
-            return [
-                "name" => trim($matches["ssid"]),
-                "address" => $matches["bssid"],
-                "signal" => $matches["signal"],
-                "channel" => $matches["channel"],
-            ];
+
+            if (count($matches)) {
+                return [
+                    "name" => trim($matches["ssid"]),
+                    "address" => $matches["bssid"],
+                    "signal" => $matches["signal"],
+                    "channel" => $matches["channel"],
+                ];
+            }
         }, $output);
+
+        return array_values(array_filter($output));
     }
 }
