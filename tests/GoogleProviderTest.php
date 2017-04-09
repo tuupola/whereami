@@ -44,7 +44,7 @@ class GoogleProviderTest extends TestCase
     public function testShouldProcess()
     {
         $stream = new Stream("php://memory", "rb+");
-        $stream->write('{"location": {"lat": 1.358496,"lng": 103.989834}, "accuracy": 100.0}');
+        $stream->write('{"location": {"lat": 1.358496,"lng": 103.98983469999999},"accuracy": 22705.0}');
         $response = new Response($stream);
 
         $mockClient = new MockCLient;
@@ -57,7 +57,7 @@ class GoogleProviderTest extends TestCase
         $location = (new GoogleProvider("fakekey", $httpClient))->process($networks);
 
         $this->assertEquals(1.358496, $location["latitude"]);
-        $this->assertEquals(103.989834, $location["longitude"]);
-        $this->assertEquals(100, $location["accuracy"]);
+        $this->assertEquals(103.98983469999999, $location["longitude"]);
+        $this->assertEquals(22705.0, $location["accuracy"]);
     }
 }
