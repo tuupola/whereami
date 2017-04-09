@@ -43,6 +43,11 @@
             "Whereami\\": "tests"
         }
     },
+    "extra": {
+        "branch-alias": {
+            "dev-master": "0.1-dev"
+        }
+    },
     "scripts": {
         "test": "composer phplint && composer phpcs && composer phpunit",
         "phpcs": "vendor/bin/phpcs --standard=PSR2 --extensions=php --encoding=utf-8 --ignore=*/vendor/* . -p",
