@@ -23,10 +23,11 @@ final class IwListScanner implements Scanner
     const REGEXP_BSSID = "/Address: ([:0-9a-fA-F]+)/";
     const REGEXP_SIGNAL = "/Signal level[:=](-?[0-9]+) dBm/";
     const REGEXP_CHANNEL = "/Channel:([0-9]+)/";
+    const BINARY = "/sbin/iwlist";
 
     private $command;
 
-    public function __construct($command = "/sbin/iwlist 2>&1")
+    public function __construct($command = self::BINARY . " 2>&1")
     {
         $this->command = $command;
     }

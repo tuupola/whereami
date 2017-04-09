@@ -25,12 +25,10 @@ final class AirportScanner implements Scanner
     const REGEXP_BSSID = "\s+(?<bssid>([0-9A-Fa-f]{2}[:-]){5}([0-9A-Fa-f]{2}))";
     const REGEXP_SIGNAL = "\s+(?<signal>-\d+)";
     const REGEXP_CHANNEL = "\s+(?<channel>\d+)";
+    const BINARY = "/System/Library/PrivateFrameworks/Apple80211.framework/Versions//Current/Resources/airport";
 
-    public function __construct(
-        $command =
-        "/System/Library/PrivateFrameworks/Apple80211.framework/Versions" .
-        "/Current/Resources/airport --scan 2>&1"
-    ) {
+    public function __construct($command = self::BINARY . " --scan 2>&1")
+    {
         $this->command = $command;
     }
 

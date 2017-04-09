@@ -15,6 +15,8 @@
 
 namespace Whereami;
 
+use Whereami\Discovery\ScannerDiscovery;
+
 class Whereami
 {
     const VERSION = "0.1.0-dev";
@@ -27,7 +29,7 @@ class Whereami
         Scanner $scanner = null
     ) {
         $this->provider = $provider;
-        $this->scanner = $scanner;
+        $this->scanner = $scanner ?: (new ScannerDiscovery)->find();
     }
 
     public function whereami()
