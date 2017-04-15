@@ -30,6 +30,7 @@ class Whereami
     {
         if ($provider instanceof Provider) {
             $this->provider = $provider;
+            $this->scanner = $scanner ?: (new ScannerDiscovery)->find();
         } elseif ($provider instanceof Adapter) {
             $this->provider = new EmulatedProvider($provider);
         } else {
@@ -37,7 +38,6 @@ class Whereami
                 "Provider must implement either Wheremami\\Provider or Whereami\\Adapter."
             );
         }
-        $this->scanner = $scanner ?: (new ScannerDiscovery)->find();
     }
 
     public function whereami()
