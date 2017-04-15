@@ -30,7 +30,6 @@ class Whereami
     {
         if ($provider instanceof Provider) {
             $this->provider = $provider;
-            $this->scanner = $scanner ?: (new ScannerDiscovery)->find();
         } elseif ($provider instanceof Adapter) {
             $this->provider = new EmulatedProvider($provider);
         } else {
@@ -38,10 +37,18 @@ class Whereami
                 "Provider must implement either Wheremami\\Provider or Whereami\\Adapter."
             );
         }
+
+        try {
+            /* If scanner was not provided try to discover one. */
+            $this->scanner = $scanner ?: (new ScannerDiscovery)->find();
+        } catch (\RuntimeException $exception) {
+            /* We should be able to continue without scanner. */
+        }
     }
 
     public function whereami()
     {
+        /* Emulated provider does not handle network information. */
         if ($this->provider instanceof EmulatedProvider) {
             return $this->provider->process([]);
         }
