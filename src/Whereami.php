@@ -16,6 +16,7 @@
 namespace Whereami;
 
 use Whereami\Discovery\ScannerDiscovery;
+use Whereami\Provider\EmulatedProvider;
 
 class Whereami
 {
@@ -23,17 +24,27 @@ class Whereami
 
     private $provider;
     private $scanner;
+    private $adapter;
 
-    public function __construct(
-        Provider $provider = null,
-        Scanner $scanner = null
-    ) {
-        $this->provider = $provider;
+    public function __construct($provider, Scanner $scanner = null)
+    {
+        if ($provider instanceof Provider) {
+            $this->provider = $provider;
+        } elseif ($provider instanceof Adapter) {
+            $this->provider = new EmulatedProvider($provider);
+        } else {
+            throw new \RuntimeException(
+                "Provider must implement either Wheremami\\Provider or Whereami\\Adapter."
+            );
+        }
         $this->scanner = $scanner ?: (new ScannerDiscovery)->find();
     }
 
     public function whereami()
     {
+        if ($this->provider instanceof EmulatedProvider) {
+            return $this->provider->process([]);
+        }
         $networks = $this->scanner->scan();
         return $this->provider->process($networks);
     }
