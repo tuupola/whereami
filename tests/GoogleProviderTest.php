@@ -58,6 +58,6 @@ class GoogleProviderTest extends TestCase
 
         $this->assertEquals(1.358496, $location["latitude"]);
         $this->assertEquals(103.98983469999999, $location["longitude"]);
-        $this->assertEquals(22705.0, $location["accuracy"]);
+        $this->assertEquals(22705, $location["accuracy"]);
     }
 }

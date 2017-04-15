@@ -72,9 +72,9 @@ final class GoogleProvider implements Provider
         $data = json_decode($json, true);
 
         return [
-            "latitude" => $data["location"]["lat"],
-            "longitude" => $data["location"]["lng"],
-            "accuracy" => $data["accuracy"],
+            "latitude" => (float) $data["location"]["lat"],
+            "longitude" => (float) $data["location"]["lng"],
+            "accuracy" => (integer) $data["accuracy"],
         ];
     }
 }

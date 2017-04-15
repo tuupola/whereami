@@ -58,6 +58,6 @@ class MozillaProviderTest extends TestCase
 
         $this->assertEquals(1.3578561, $location["latitude"]);
         $this->assertEquals(103.9885244, $location["longitude"]);
-        $this->assertEquals(55.6020161, $location["accuracy"]);
+        $this->assertEquals(55, $location["accuracy"]);
     }
 }
