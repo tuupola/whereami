@@ -25,7 +25,7 @@ $ composer require zendframework/zend-diactoros
 
 ## Usage
 
-To you use must provide wifi location service provider and a wifi network scanner. With macOS you can use `AirportScanner` which does not require any extra setup. With Linux based systems you can use `IwlistScanner` which might need root privileges to be run. Example below uses [Mozilla Location Service](https://location.services.mozilla.com/).
+To you use must provide wifi location service provider and optionally a wifi network scanner. With macOS you can use `AirportScanner` which does not require any extra setup. With Linux based systems you can use `IwlistScanner` which might need root privileges to be run. Example below uses [Mozilla Location Service](https://location.services.mozilla.com/).
 
 ```php
 require __DIR__ . "/vendor/autoload.php";
@@ -44,6 +44,17 @@ Array
     [accuracy] =>  65
 )
 */
+```
+
+Pro tip! Like mentioned providing scanner is optional. If scanner is not provided system will try to autodetect it. This way same code should work in bot macOS and *NIX systems.
+
+```php
+require __DIR__ . "/vendor/autoload.php";
+
+$provider = new MozillaProvider("your-api-key-here");
+$locator = new Whereami($provider);
+
+$location = $locator->whereami();
 ```
 
 ## Providers
