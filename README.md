@@ -26,7 +26,7 @@ $ composer require zendframework/zend-diactoros
 ## Usage
 ### Current location
 
-To find current computers location you must provide wifi location service provider and optionally a wifi network scanner. With macOS you can use `AirportScanner` which does not require any extra setup. With Linux based systems you can use `IwlistScanner` which might need root privileges to be run. Example below uses [Mozilla Location Service](https://location.services.mozilla.com/).
+To find current computers location you must provide wifi location service provider and optionally a wifi network scanner. With macOS you can use `AirportScanner` which does not require any extra setup. With Linux based systems you can use `IwlistScanner` which needs root privileges to be run. Example below uses [Mozilla Location Service](https://location.services.mozilla.com/).
 
 ```php
 require __DIR__ . "/vendor/autoload.php";
@@ -161,7 +161,7 @@ $scanner = new AirportScanner("/tmp/airport  --scan 2>&1");
 
 ### Iwlist with sudo
 
-This is the default scanner for Linux and other *NIX based systems. It uses the [iwlist](https://linux.die.net/man/8/iwlist) commandline tool. This scanner is bit more complicated to set up. Commandline tool itself needs `root` privileges to be run.
+This is the default scanner for Linux and other *NIX based systems. It uses the [iwlist](https://linux.die.net/man/8/iwlist) commandline tool. This scanner is bit more complicated to set up since it needs root privileges to be run.
 
 There are several ways to get around this. The default one is to give your webserver privileges to run `sudo iwlist` without password by editing the `/etc/sudoers` file.
 
@@ -192,7 +192,7 @@ $scanner = new IwlistScanner;
 
 ### Iwlist without sudo
 
-If you do not want the webserver process privileges to run `iwlist` as root you could set up a root cronjob which writes the scan results to text file instead.
+If you do not want to give the webserver privileges to run `iwlist` as root you could set up a root cronjob which writes the scan results to text file instead.
 
 ```
 $ sudo crontab -e
@@ -219,8 +219,50 @@ $scanner = new IwlistScanner("cat /tmp/iwlist.txt");
 ```
 
 ## Adapters
+
+Some operating have commandline tools for determining the current position. Adapters provide an interface for these. You can use an adapter for developing if you do not have access to any external geopositioning provider.
+
+```php
+require __DIR__ . "/vendor/autoload.php";
+
+use Whereami\Adapter\CoreLocationAdapter;
+use Whereami\Whereami;
+
+$adapter = new CoreLocationAdapter;
+$locator = new Whereami($adapter);
+
+$location = $locator->whereami();
+```
+
+Note that adapters always return the location of the current machine. They cannot be used to determine third party location. Trying to do so will trigger a PHP warning.
+
 ### Corelocation
+
+This adapter uses the macOS [CoreLocationCLI](https://github.com/fulldecent/corelocationcli) tool. Internally it uses [Core Location](https://developer.apple.com/reference/corelocation) services. Install it using Homebrew.
+
+```
+$ brew install corelocationcli
+```
+
+```php
+use Whereami\Adapter\CoreLocationAdapter;
+
+$adapter = new CoreLocationAdapter;
+```
+
 ### LocateMe
+
+This adapter uses the macOS [LocateMe](http://iharder.sourceforge.net/current/macosx/locateme/) tool. Internally it uses [Core Location](https://developer.apple.com/reference/corelocation) services. Install it using Homebrew.
+
+```
+$ brew install locateme
+```
+
+```php
+use Whereami\Adapter\LocateMeAdapter;
+
+$adapter = new LocateMeAdapter;
+```
 
 ## Testing
 
