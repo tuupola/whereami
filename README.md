@@ -24,11 +24,16 @@ $ composer require zendframework/zend-diactoros
 ```
 
 ## Usage
+### Current location
 
-To you use must provide wifi location service provider and optionally a wifi network scanner. With macOS you can use `AirportScanner` which does not require any extra setup. With Linux based systems you can use `IwlistScanner` which might need root privileges to be run. Example below uses [Mozilla Location Service](https://location.services.mozilla.com/).
+To find current computers location you must provide wifi location service provider and optionally a wifi network scanner. With macOS you can use `AirportScanner` which does not require any extra setup. With Linux based systems you can use `IwlistScanner` which might need root privileges to be run. Example below uses [Mozilla Location Service](https://location.services.mozilla.com/).
 
 ```php
 require __DIR__ . "/vendor/autoload.php";
+
+use Whereami\Provider\MozillaProvider;
+use Whereami\Scanner\AirportScanner;
+use Whereami\Whereami;
 
 $provider = new MozillaProvider("your-api-key-here");
 $scanner = new AirportScanner;
@@ -46,10 +51,13 @@ Array
 */
 ```
 
-Pro tip! Like mentioned providing scanner is optional. If scanner is not provided system will try to autodetect it. This way same code should work in bot macOS and *NIX systems.
+Pro tip! Like mentioned above providing scanner is optional. If scanner is not provided system will try to autodetect it. This way same code should work in both macOS and *NIX systems.
 
 ```php
 require __DIR__ . "/vendor/autoload.php";
+
+use Whereami\Provider\MozillaProvider;
+use Whereami\Whereami;
 
 $provider = new MozillaProvider("your-api-key-here");
 $locator = new Whereami($provider);
@@ -57,11 +65,85 @@ $locator = new Whereami($provider);
 $location = $locator->whereami();
 ```
 
+### Third party location
+
+Sometimes it is useful to locate third party locations. For example you might have several IoT devices whose location you need to track. You can locate these by calling `$locator->whereis($networks)` method with network info as a parameter.
+
+```php
+require __DIR__ . "/vendor/autoload.php";
+
+use Whereami\Provider\MozillaProvider;
+use Whereami\Whereami;
+
+$provider = new MozillaProvider("your-api-key-here");
+$locator = new Whereami($provider);
+
+$networks[] = [
+    "name" => "#WiFi@Changi",
+    "address" => "64:d8:14:72:60:0c",
+    "signal" => -90,
+    "channel" => 149,
+];
+
+$networks[] = [
+    "name" => "#WiFi@Changi",
+    "address" => "10:bd:18:5f:e9:83",
+    "signal" => -70,
+    "channel" => 6,
+];
+
+$location = $locator->whereis($networks);
+
+/*
+Array
+(
+    [latitude] => 1.3558172
+    [longitude] => 103.9915859
+    [accuracy] => 38
+)
+*/
+```
+
 ## Providers
 ### Combain
+
+This provider uses [Combain CPS API](https://combain.com/api/). It requires an API key but they do offer [free evaluation account](https://combain.com/sign-up/) for developers.
+
+```php
+use Whereami\Provider\CombainProvider;
+
+$provider = new CombainProvider("your-api-key-here");
+````
+
 ### Google
+
+This provider uses [The Google Maps Geolocation API](https://developers.google.com/maps/documentation/geolocation/intro). You will need an [API KEY](https://developers.google.com/maps/documentation/geolocation/get-api-key). There are some [limits on free usage](https://developers.google.com/maps/documentation/geolocation/usage-limits).
+
+```php
+use Whereami\Provider\GoogleProvider;
+
+$provider = new GoogleProvider("your-api-key-here");
+```
+
 ### Mozilla
+
+This provider uses [Mozilla Location Service (MLS)](https://location.services.mozilla.com/). It requires an API key but you can use the key `test` for developing.
+
+```php
+use Whereami\Provider\MozillaProvider;
+
+$provider = new MozillaProvider("your-api-key-here");
+```
+
 ### Unwired
+
+This provider uses [Unwired Labs LocationAPI](https://unwiredlabs.com/locationapi). API key is required but you can sign up for [free developer account](https://unwiredlabs.com/trial).
+
+```php
+use Whereami\Provider\UnwiredProvider;
+
+$provider = new UnwiredProvider("your-api-key-here");
+```
 
 ## Scanners
 ### Airport
