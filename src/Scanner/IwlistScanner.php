@@ -27,7 +27,7 @@ final class IwListScanner implements Scanner
 
     private $command;
 
-    public function __construct($command = self::BINARY . " 2>&1")
+    public function __construct($command = self::BINARY . " scan 2>&1")
     {
         $this->command = $command;
     }
