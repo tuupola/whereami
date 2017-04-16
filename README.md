@@ -8,7 +8,7 @@
 
 Common interface for wifi positioning services.
 
-![Whereami](http://www.appelsiini.net/img/whereami-headline-1400.png)
+![Whereami](http://www.appelsiini.net/img/whereami-headline-1400-2.png)
 
 
 ## Install
