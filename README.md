@@ -11,7 +11,7 @@
 Install the library using [Composer](https://getcomposer.org/). You will also need to choose a [HTTP client](http://docs.php-http.org/en/latest/clients.html) for example [php-http/curl-client](http://docs.php-http.org/en/latest/clients/curl-client.html).
 
 ``` bash
-$ composer require tuupola/whereami:dev-master
+$ composer require tuupola/whereami
 $ composer require php-http/curl-client
 ```
 
