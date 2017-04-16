@@ -113,11 +113,11 @@ This provider uses [Combain CPS API](https://combain.com/api/). It requires an A
 use Whereami\Provider\CombainProvider;
 
 $provider = new CombainProvider("your-api-key-here");
-````
+```
 
 ### Google
 
-This provider uses [The Google Maps Geolocation API](https://developers.google.com/maps/documentation/geolocation/intro). You will need an [API KEY](https://developers.google.com/maps/documentation/geolocation/get-api-key). There are some [limits on free usage](https://developers.google.com/maps/documentation/geolocation/usage-limits).
+This provider uses [The Google Maps Geolocation API](https://developers.google.com/maps/documentation/geolocation/intro). You will need an [API key](https://developers.google.com/maps/documentation/geolocation/get-api-key). There are some [limits on free usage](https://developers.google.com/maps/documentation/geolocation/usage-limits).
 
 ```php
 use Whereami\Provider\GoogleProvider;
@@ -146,8 +146,77 @@ $provider = new UnwiredProvider("your-api-key-here");
 ```
 
 ## Scanners
+
+Scanners scan the surrounding wifi networks and return the results as an array. This array is then given to a provider which uses the network data to retrieve the geoposition.
+
 ### Airport
-### Iwlist
+
+This is the default scanner for macOS. It uses the `airport` commandline tool from Apple80211 framework. Custom command can be passed via constructor. This is optional and should be used for example if your `airport` binary is located in non standard place
+
+```php
+use Whereami\Scanner\AirportScanner;
+
+$scanner = new AirportScanner("/tmp/airport  --scan 2>&1");
+```
+
+### Iwlist with sudo
+
+This is the default scanner for Linux and other *NIX based systems. It uses the [iwlist](https://linux.die.net/man/8/iwlist) commandline tool. This scanner is bit more complicated to set up. Commandline tool itself needs `root` privileges to be run.
+
+There are several ways to get around this. The default one is to give your webserver privileges to run `sudo iwlist` without password by editing the `/etc/sudoers` file.
+
+```
+$ sudo visudo
+```
+
+Then add the following to the end of the file.
+
+```
+apache ALL=(ALL) NOPASSWD: /sbin/iwlist
+```
+
+After editing the file save and exit. Make sure you can run the command as your webserver user.
+
+```
+$ sudo su apache
+$ /sbin/iwlist scan
+```
+
+If you can see the scan results you are good to go.
+
+```php
+use Whereami\Scanner\IwlistScanner;
+
+$scanner = new IwlistScanner;
+```
+
+### Iwlist without sudo
+
+If you do not want the webserver process privileges to run `iwlist` as root you could set up a root cronjob which writes the scan results to text file instead.
+
+```
+$ sudo crontab -e
+```
+
+Add the following line to the crontab. This will run the scan every 10 minutes.
+
+```
+*/10 * * * * /sbin/iwlist scan > /tmp/iwlist.txt
+```
+
+After editing the file save and exit. Wait for 10 minutes to make sure your cron entry works.
+
+```
+$ cat /tmp/iwlist.txt
+```
+
+If you can see the scan results you are good to go. However you must use custom command which uses the output from the cronjob.
+
+```php
+use Whereami\Scanner\IwlistScanner;
+
+$scanner = new IwlistScanner("cat /tmp/iwlist.txt");
+```
 
 ## Adapters
 ### Corelocation
