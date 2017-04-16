@@ -6,7 +6,7 @@
 [![HHVM Status](https://img.shields.io/hhvm/tuupola/whereami.svg?style=flat-square)](http://hhvm.h4cc.de/package/tuupola/whereami)
 [![Coverage](http://img.shields.io/codecov/c/github/tuupola/whereami.svg?style=flat-square)](https://codecov.io/github/tuupola/whereami)
 
-Common interface for wifi positioning services.
+Common interface for wifi positioning services, inspired by [whoami](https://linux.die.net/man/1/whoami).
 
 ![Whereami](http://www.appelsiini.net/img/whereami-headline-1400-2.png)
 
