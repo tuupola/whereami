@@ -27,10 +27,7 @@
         "squizlabs/php_codesniffer": "^2.5",
         "overtrue/phplint": "^0.2.0",
         "php-http/mock-client": "^1.0",
-        "php-http/curl-client": "^1.7",
-        "zendframework/zend-diactoros": "^1.4",
-        "php-http/logger-plugin": "^1.0",
-        "monolog/monolog": "^1.22"
+        "zendframework/zend-diactoros": "^1.4"
     },
     "autoload": {
         "psr-4": {
@@ -40,11 +37,6 @@
     "autoload-dev": {
         "psr-4": {
             "Whereami\\": "tests"
-        }
-    },
-    "extra": {
-        "branch-alias": {
-            "dev-master": "0.1-dev"
         }
     },
     "scripts": {
