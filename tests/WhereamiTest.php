@@ -71,7 +71,7 @@ class WhereamiTest extends TestCase
         $command = "/bin/cat " . __DIR__ . "/changi.txt";
         $scanner = new AirportScanner($command);
 
-        $provider =  new MozillaProvider("fakekey", $httpClient);
+        $provider =  new MozillaProvider("fakekey", null, $httpClient);
         $locator = new Whereami($provider, $scanner);
         $location = $locator->whereami();
 
@@ -108,7 +108,7 @@ class WhereamiTest extends TestCase
         $mockClient->addResponse($response);
         $httpClient = (new HttpClientFactory($mockClient))->create();
 
-        $provider =  new MozillaProvider("fakekey", $httpClient);
+        $provider =  new MozillaProvider("fakekey", null, $httpClient);
         $locator = new Whereami($provider);
 
         $networks = file_get_contents(__DIR__ . "/changi.json");

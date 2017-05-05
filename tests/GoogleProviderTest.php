@@ -54,7 +54,7 @@ class GoogleProviderTest extends TestCase
         $networks = file_get_contents(__DIR__ . "/changi.json");
         $networks = json_decode($networks, true);
 
-        $location = (new GoogleProvider("fakekey", $httpClient))->process($networks);
+        $location = (new GoogleProvider("fakekey", null, $httpClient))->process($networks);
 
         $this->assertEquals(1.358496, $location["latitude"]);
         $this->assertEquals(103.98983469999999, $location["longitude"]);

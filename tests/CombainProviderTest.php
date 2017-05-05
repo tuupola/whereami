@@ -54,7 +54,7 @@ class CombainProviderTest extends TestCase
         $networks = file_get_contents(__DIR__ . "/changi.json");
         $networks = json_decode($networks, true);
 
-        $location = (new CombainProvider("fakekey", $httpClient))->process($networks);
+        $location = (new CombainProvider("fakekey", null, $httpClient))->process($networks);
 
         $this->assertEquals(1.35985, $location["latitude"]);
         $this->assertEquals(103.9608, $location["longitude"]);

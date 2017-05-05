@@ -1,0 +1,8 @@
+                            SSID BSSID             RSSI CHANNEL HT CC SECURITY (auth/unicast/group)
+            REBEL_COMMAND_CENTER f4:f2:6d:9c:9c:c9 -63  149     Y  TH WPA(PSK/AES/AES) WPA2(PSK/AES/AES) 
+                Anthem Apartment 00:02:6f:e3:81:18 -52  11      N  -- WEP
+                    ANTHEM Wi-Fi f4:f2:6d:9c:9c:ca -65  11      Y  -- WPA(PSK/AES/AES) WPA2(PSK/AES/AES) 
+  HP-Print-6A-Color LaserJet Pro 54:35:30:32:e3:6a -71  6       Y  -- NONE
+               REBELROCKCLIMBING 30:5a:3a:63:78:81 -71  6       Y  -- WPA2(PSK/AES/AES) 
+                 REBEL_COMMANDER 30:5a:3a:63:78:80 -67  6       Y  -- WPA2(PSK/AES/AES) 
+                 Anthem Wakepark 00:04:ed:c6:7a:44 -65  1       Y  US NONE

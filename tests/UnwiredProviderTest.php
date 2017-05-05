@@ -54,7 +54,7 @@ class UnwiredProviderTest extends TestCase
         $networks = file_get_contents(__DIR__ . "/changi.json");
         $networks = json_decode($networks, true);
 
-        $location = (new UnwiredProvider("fakekey", $httpClient))->process($networks);
+        $location = (new UnwiredProvider("fakekey", null, $httpClient))->process($networks);
 
         $this->assertEquals(1.35849578, $location["latitude"]);
         $this->assertEquals(103.9881204, $location["longitude"]);

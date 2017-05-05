@@ -30,15 +30,17 @@ final class CombainProvider implements Provider
 
     public function __construct(
         $apikey,
+        array $options = null,
         HttpClient $httpClient = null,
         RequestFactory $requestFactory = null
     ) {
         $this->apikey = $apikey;
+        $this->options = $options;
         $this->httpClient = $httpClient ?: (new HttpClientFactory)->create();
         $this->requestFactory = $requestFactory ?: MessageFactoryDiscovery::find();
     }
 
-    public function process(array $data, array $options = [])
+    public function process(array $data = [])
     {
         $endpoint = $this->endpoint();
         $headers = [];
@@ -53,8 +55,13 @@ final class CombainProvider implements Provider
         return $this->endpoint .= "?" . http_build_query(["key" => $this->apikey]);
     }
 
-    private function transform($data = [])
+    private function transform($data)
     {
+        /* Anything truthy means enable ip fallback. */
+        if (!empty($this->options["ip"])) {
+            $json["fallbacks"] = ["ipf" => 1];
+        }
+
         $json["wifiAccessPoints"] = array_map(function ($entry) {
             return [
                 "ssid" => $entry["name"],

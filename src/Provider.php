@@ -23,5 +23,5 @@ interface Provider
      * @param array $data
      * @return array
      */
-    public function process(array $data, array $options = []);
+    public function process(array $data = []);
 }

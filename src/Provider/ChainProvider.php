@@ -15,23 +15,19 @@
 
 namespace Whereami\Provider;
 
-use Whereami\Adapter;
 use Whereami\Provider;
 
-final class EmulatedProvider implements Provider
+final class ChainProvider implements Provider
 {
-    private $adapter;
+    private $providers;
 
-    public function __construct(Adapter $adapter)
+    public function __construct(array $providers, $options = [])
     {
-        $this->adapter = $adapter;
+        $this->providers = $providers;
     }
 
     public function process(array $data = [], array $options = [])
     {
-        if (count($data)) {
-            trigger_error("Emulated provider ignores wifi network data.", E_USER_WARNING);
-        }
-        return $this->adapter->process();
+        return [];
     }
 }

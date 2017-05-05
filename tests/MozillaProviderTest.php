@@ -54,7 +54,7 @@ class MozillaProviderTest extends TestCase
         $networks = file_get_contents(__DIR__ . "/changi.json");
         $networks = json_decode($networks, true);
 
-        $location = (new MozillaProvider("fakekey", $httpClient))->process($networks);
+        $location = (new MozillaProvider("fakekey", null, $httpClient))->process($networks);
 
         $this->assertEquals(1.3578561, $location["latitude"]);
         $this->assertEquals(103.9885244, $location["longitude"]);
