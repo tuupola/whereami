@@ -19,6 +19,7 @@ use Http\Discovery\HttpClientDiscovery;
 use Http\Discovery\Strategy\MockClientStrategy;
 use Http\Mock\Client as MockClient;
 use PHPUnit\Framework\TestCase;
+use Whereami\Exception\NotFoundException;
 use Whereami\Provider\UnwiredProvider;
 use Zend\Diactoros\Response;
 use Zend\Diactoros\Stream;
@@ -46,6 +47,28 @@ class UnwiredProviderTest extends TestCase
         $stream = new Stream("php://memory", "rb+");
         $stream->write('{"status":"ok","balance":11,"lat":1.35849578,"lon":103.9881204,"accuracy":29}');
         $response = new Response($stream);
+
+        $mockClient = new MockCLient;
+        $mockClient->addResponse($response);
+        $httpClient = (new HttpClientFactory($mockClient))->create();
+
+        $networks = file_get_contents(__DIR__ . "/changi.json");
+        $networks = json_decode($networks, true);
+
+        $location = (new UnwiredProvider("fakekey", $httpClient))->process($networks);
+
+        $this->assertEquals(1.35849578, $location["latitude"]);
+        $this->assertEquals(103.9881204, $location["longitude"]);
+        $this->assertEquals(29, $location["accuracy"]);
+    }
+
+    public function testShouldThrowNotFoundException()
+    {
+        $this->expectException(NotFoundException::class);
+
+        $stream = new Stream("php://memory", "rb+");
+        $stream->write('{"status":"error","message":"No matches found","balance":99}');
+        $response = new Response($stream, 200);
 
         $mockClient = new MockCLient;
         $mockClient->addResponse($response);
