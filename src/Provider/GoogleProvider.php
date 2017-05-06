@@ -18,6 +18,7 @@ namespace Whereami\Provider;
 use Http\Client\HttpClient;
 use Http\Discovery\MessageFactoryDiscovery;
 use Http\Message\RequestFactory;
+use Whereami\Exception\NotFoundException;
 use Whereami\HttpClientFactory;
 use Whereami\Provider;
 
@@ -45,6 +46,11 @@ final class GoogleProvider implements Provider
         $body = $this->transform($data);
         $request = $this->requestFactory->createRequest("POST", $endpoint, $headers, $body);
         $response = $this->httpClient->sendRequest($request);
+
+        if (404 === $response->getStatusCode()) {
+            throw new NotFoundException("No matches found", 404);
+        }
+
         return $this->parse((string) $response->getBody());
     }
 
@@ -55,6 +61,7 @@ final class GoogleProvider implements Provider
 
     private function transform($data = [])
     {
+        $json["considerIp"] = false;
         $json["wifiAccessPoints"] = array_map(function ($entry) {
             return [
                 "ssid" => $entry["name"],
