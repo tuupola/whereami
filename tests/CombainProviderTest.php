@@ -20,6 +20,7 @@ use Http\Discovery\Strategy\MockClientStrategy;
 use Http\Mock\Client as MockClient;
 use PHPUnit\Framework\TestCase;
 use Whereami\Provider\CombainProvider;
+use Whereami\Exception\NotFoundException;
 use Zend\Diactoros\Response;
 use Zend\Diactoros\Stream;
 
@@ -46,6 +47,29 @@ class CombainProviderTest extends TestCase
         $stream = new Stream("php://memory", "rb+");
         $stream->write('{"location":{"lat":1.35985,"lng":103.9608},"accuracy":24}');
         $response = new Response($stream);
+
+        $mockClient = new MockCLient;
+        $mockClient->addResponse($response);
+        $httpClient = (new HttpClientFactory($mockClient))->create();
+
+        $networks = file_get_contents(__DIR__ . "/changi.json");
+        $networks = json_decode($networks, true);
+
+        $location = (new CombainProvider("fakekey", $httpClient))->process($networks);
+
+        $this->assertEquals(1.35985, $location["latitude"]);
+        $this->assertEquals(103.9608, $location["longitude"]);
+        $this->assertEquals(24, $location["accuracy"]);
+    }
+
+    public function testShouldThrowNotFoundException()
+    {
+        $this->expectException(NotFoundException::class);
+
+        $stream = new Stream("php://memory", "rb+");
+        $stream->write('{"error": {"errors": {"domain":"geolocation","reason":"notFound",');
+        $stream->write('"message":"Not Found"},"code":404,"message":"Not Found"}}');
+        $response = new Response($stream, 404);
 
         $mockClient = new MockCLient;
         $mockClient->addResponse($response);
