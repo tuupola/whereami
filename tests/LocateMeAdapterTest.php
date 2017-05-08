@@ -36,4 +36,18 @@ class LocateMeAdapterTest extends TestCase
         $result = (new LocateMeAdapter($command))->process();
         $this->assertEquals($expected, $result);
     }
+
+    public function testShouldSetCommand()
+    {
+        $command = "/bin/true --something";
+        $adapter = new LocateMeAdapter($command);
+
+        /* Closure kludge to test private properties. */
+        $self = $this;
+        $closure = function () use ($self) {
+            $self->assertEquals("/bin/true --something", $this->command);
+        };
+
+        call_user_func($closure->bindTo($adapter, LocateMeAdapter::class));
+    }
 }

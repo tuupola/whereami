@@ -35,4 +35,18 @@ class AirportScannerTest extends TestCase
         $this->assertEquals(-89, $result[0]["signal"]);
         $this->assertEquals(10, $result[0]["channel"]);
     }
+
+    public function testShouldSetCommand()
+    {
+        $command = "/bin/true --something";
+        $scanner = new AirportScanner($command);
+
+        /* Closure kludge to test private properties. */
+        $self = $this;
+        $closure = function () use ($self) {
+            $self->assertEquals("/bin/true --something", $this->command);
+        };
+
+        call_user_func($closure->bindTo($scanner, AirportScanner::class));
+    }
 }

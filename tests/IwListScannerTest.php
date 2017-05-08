@@ -35,4 +35,18 @@ class IwListScannerTest extends TestCase
         $this->assertEquals(-74, $result[5]["signal"]);
         $this->assertEquals(6, $result[5]["channel"]);
     }
+
+    public function testShouldSetCommand()
+    {
+        $command = "/bin/true --something";
+        $scanner = new IwListScanner($command);
+
+        /* Closure kludge to test private properties. */
+        $self = $this;
+        $closure = function () use ($self) {
+            $self->assertEquals("/bin/true --something", $this->command);
+        };
+
+        call_user_func($closure->bindTo($scanner, IwListScanner::class));
+    }
 }

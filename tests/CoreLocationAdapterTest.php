@@ -36,4 +36,18 @@ class CoreLocationAdapterTest extends TestCase
         $result = (new CoreLocationAdapter($command))->process();
         $this->assertEquals($expected, $result);
     }
+
+    public function testShouldSetCommand()
+    {
+        $command = "/bin/true --something";
+        $adapter = new CoreLocationAdapter($command);
+
+        /* Closure kludge to test private properties. */
+        $self = $this;
+        $closure = function () use ($self) {
+            $self->assertEquals("/bin/true --something", $this->command);
+        };
+
+        call_user_func($closure->bindTo($adapter, CoreLocationAdapter::class));
+    }
 }
