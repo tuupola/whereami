@@ -13,7 +13,9 @@
  *
  */
 
-namespace Whereami;
+namespace Whereami\Factory;
+
+use Whereami\Whereami;
 
 use Http\Client\Common\Plugin;
 use Http\Client\Common\PluginClient;

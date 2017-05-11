@@ -15,22 +15,16 @@
 
 namespace Whereami;
 
-use Http\Discovery\HttpClientDiscovery;
-use Http\Discovery\Strategy\MockClientStrategy;
 use Http\Mock\Client as MockClient;
 use PHPUnit\Framework\TestCase;
-use Whereami\Provider\CombainProvider;
 use Whereami\Exception\NotFoundException;
+use Whereami\Factory\HttpClientFactory;
+use Whereami\Provider\CombainProvider;
 use Zend\Diactoros\Response;
 use Zend\Diactoros\Stream;
 
 class CombainProviderTest extends TestCase
 {
-    public function setUp()
-    {
-        HttpClientDiscovery::prependStrategy(MockClientStrategy::class);
-    }
-
     public function testShouldBeTrue()
     {
         $this->assertTrue(true);

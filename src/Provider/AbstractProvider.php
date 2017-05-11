@@ -21,7 +21,7 @@ use Http\Message\RequestFactory;
 use Psr\Http\Message\ResponseInterface;
 use Whereami\Exception\NotFoundException;
 use Whereami\Exception\BadRequestException;
-use Whereami\HttpClientFactory;
+use Whereami\Factory\HttpClientFactory;
 use Whereami\Provider;
 
 abstract class AbstractProvider implements Provider

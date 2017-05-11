@@ -15,6 +15,8 @@
 
 namespace Whereami;
 
+use Whereami\Factory\HttpClientFactory;
+
 use PHPUnit\Framework\TestCase;
 use Whereami\Scanner\AirportScanner;
 use Http\Client\Common\PluginClient;

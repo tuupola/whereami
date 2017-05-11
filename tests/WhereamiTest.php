@@ -18,6 +18,7 @@ namespace Whereami;
 use Http\Mock\Client as MockClient;
 use PHPUnit\Framework\TestCase;
 use Whereami\Adapter\CoreLocationAdapter;
+use Whereami\Factory\HttpClientFactory;
 use Whereami\Scanner\AirportScanner;
 use Whereami\Provider\EmulatedProvider;
 use Whereami\Provider\MozillaProvider;
@@ -27,7 +28,6 @@ use Zend\Diactoros\Stream;
 
 class WhereamiTest extends TestCase
 {
-
     public function testShouldBeTrue()
     {
         $this->assertTrue(true);
