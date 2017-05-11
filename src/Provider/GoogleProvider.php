@@ -15,51 +15,13 @@
 
 namespace Whereami\Provider;
 
-use Http\Client\HttpClient;
-use Http\Discovery\MessageFactoryDiscovery;
-use Http\Message\RequestFactory;
-use Whereami\Exception\NotFoundException;
-use Whereami\HttpClientFactory;
 use Whereami\Provider;
 
-final class GoogleProvider implements Provider
+final class GoogleProvider extends AbstractProvider implements Provider
 {
-    private $endpoint = "https://www.googleapis.com/geolocation/v1/geolocate";
-    private $apikey;
-    private $httpClient;
-    private $requestFactory;
+    protected $endpoint = "https://www.googleapis.com/geolocation/v1/geolocate";
 
-    public function __construct(
-        $apikey,
-        HttpClient $httpClient = null,
-        RequestFactory $requestFactory = null
-    ) {
-        $this->apikey = $apikey;
-        $this->httpClient = $httpClient ?: (new HttpClientFactory)->create();
-        $this->requestFactory = $requestFactory ?: MessageFactoryDiscovery::find();
-    }
-
-    public function process(array $data, array $options = [])
-    {
-        $endpoint = $this->endpoint();
-        $headers = [];
-        $body = $this->transform($data);
-        $request = $this->requestFactory->createRequest("POST", $endpoint, $headers, $body);
-        $response = $this->httpClient->sendRequest($request);
-
-        if (404 === $response->getStatusCode()) {
-            throw new NotFoundException("No matches found", 404);
-        }
-
-        return $this->parse((string) $response->getBody());
-    }
-
-    private function endpoint()
-    {
-        return $this->endpoint .= "?" . http_build_query(["key" => $this->apikey]);
-    }
-
-    private function transform($data = [])
+    protected function transform($data = [])
     {
         $json["considerIp"] = false;
         $json["wifiAccessPoints"] = array_map(function ($entry) {
@@ -74,7 +36,7 @@ final class GoogleProvider implements Provider
         return json_encode($json, JSON_UNESCAPED_SLASHES | JSON_PRETTY_PRINT);
     }
 
-    private function parse($json)
+    protected function parse($json)
     {
         $data = json_decode($json, true);
 
