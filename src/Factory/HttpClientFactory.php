@@ -44,8 +44,6 @@ class HttpClientFactory
             //new ErrorPlugin,
             new HeaderSetPlugin([
                 "User-Agent" => "whereami/" .  Whereami::VERSION,
-                "Accept" => "application/json",
-                "Content-Type" => "application/json; charset=utf-8",
             ])
         ];
 

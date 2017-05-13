@@ -19,6 +19,7 @@ use Http\Client\HttpClient;
 use Http\Discovery\MessageFactoryDiscovery;
 use Http\Message\RequestFactory;
 use Psr\Http\Message\ResponseInterface;
+use Psr\Http\Message\RequestInterface;
 use Whereami\Exception\NotFoundException;
 use Whereami\Exception\BadRequestException;
 use Whereami\Factory\HttpClientFactory;
@@ -46,6 +47,7 @@ abstract class AbstractProvider implements Provider
         $headers = [];
         $body = $this->transform($data);
         $request = $this->requestFactory->createRequest("POST", $endpoint, $headers, $body);
+        $request = $this->addRequestHeaders($request);
         $response = $this->httpClient->sendRequest($request);
 
         if ($response->getStatusCode() >= 400 && $response->getStatusCode() < 600) {
@@ -64,6 +66,12 @@ abstract class AbstractProvider implements Provider
         throw new BadRequestException($data["error"]["message"]);
     }
 
+    protected function addRequestHeaders(RequestInterface $request)
+    {
+        return $request
+            ->withHeader("Accept", "application/json")
+            ->withHeader("Content-Type", "application/json; charset=utf-8");
+    }
 
     protected function endpoint()
     {

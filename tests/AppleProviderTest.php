@@ -70,4 +70,26 @@ class AppleProviderTest extends TestCase
         $this->assertEquals(24.76173111, $location["longitude"]);
         $this->assertEquals(42, $location["accuracy"]);
     }
+
+    public function testShouldHaveApplicationUrlEncodedHeaders()
+    {
+        $mockClient = new MockCLient;
+        $httpClient = (new HttpClientFactory($mockClient))->create();
+
+        $networks = file_get_contents(__DIR__ . "/changi.json");
+        $networks = json_decode($networks, true);
+
+        $location = (new AppleProvider("fakekey", $httpClient))->process($networks);
+
+        $request = $mockClient->getRequests()[0];
+
+        $this->assertEquals(
+            "*/*",
+            $request->getHeaderLine("Accept")
+        );
+        $this->assertEquals(
+            "application/x-www-form-urlencoded",
+            $request->getHeaderLine("Content-Type")
+        );
+    }
 }

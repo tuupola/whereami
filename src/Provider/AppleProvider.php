@@ -15,6 +15,7 @@
 
 namespace Whereami\Provider;
 
+use Psr\Http\Message\RequestInterface;
 use Tuupola\CoreLocation\Request;
 use Tuupola\CoreLocation\Response;
 use Whereami\Provider;
@@ -48,5 +49,12 @@ final class AppleProvider extends AbstractProvider implements Provider
                 "accuracy" => (integer) $router["accuracy"],
             ];
         }
+    }
+
+    protected function addRequestHeaders(RequestInterface $request)
+    {
+        return $request
+            ->withHeader("Accept", "*/*")
+            ->withHeader("Content-Type", "application/x-www-form-urlencoded");
     }
 }
