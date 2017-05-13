@@ -56,6 +56,28 @@ class MozillaProviderTest extends TestCase
         $this->assertEquals(55, $location["accuracy"]);
     }
 
+    public function testShouldHaveApplicationJsonHeaders()
+    {
+        $mockClient = new MockCLient;
+        $httpClient = (new HttpClientFactory($mockClient))->create();
+
+        $networks = file_get_contents(__DIR__ . "/changi.json");
+        $networks = json_decode($networks, true);
+
+        $location = (new MozillaProvider("fakekey", $httpClient))->process($networks);
+
+        $request = $mockClient->getRequests()[0];
+
+        $this->assertEquals(
+            "application/json",
+            $request->getHeaderLine("Accept")
+        );
+        $this->assertEquals(
+            "application/json; charset=utf-8",
+            $request->getHeaderLine("Content-Type")
+        );
+    }
+
     public function testShouldThrowNotFoundException()
     {
         $this->expectException(NotFoundException::class);
