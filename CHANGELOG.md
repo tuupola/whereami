@@ -4,9 +4,14 @@ All notable changes to this project will be documented in this file, in reverse 
 
 ## 0.3.0 - unreleased
 
-### Changer
+### Added
 
-- Provider now thrown exception if location was not found.
+- Support for Apple location services
+- Support for nyholm/psr7.
+
+### Changed
+
+- Provider now throws an exception if location was not found.
 
 ## 0.2.0 - 2017-04-16
 
