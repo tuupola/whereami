@@ -16,6 +16,7 @@
 namespace Whereami\Provider;
 
 use Whereami\Provider;
+use Whereami\Exception\NotFoundException;
 
 final class BrowserlocationProvider extends AbstractProvider implements Provider
 {
@@ -47,6 +48,11 @@ final class BrowserlocationProvider extends AbstractProvider implements Provider
     protected function parse($json)
     {
         $data = json_decode($json, true);
+
+        /* Location was not found and API went for ip fallback. */
+        if ($data["accuracy"] > 5000) {
+            throw new NotFoundException("No matches found", 404);
+        }
 
         return [
             "latitude" => (float) $data["location"]["lat"],
