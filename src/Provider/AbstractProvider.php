@@ -16,9 +16,10 @@
 namespace Whereami\Provider;
 
 use Http\Client\HttpClient;
-use Http\Discovery\MessageFactoryDiscovery;
-use Http\Message\RequestFactory;
+use Interop\Http\Factory\RequestFactoryInterface;
 use Psr\Http\Message\ResponseInterface;
+use Tuupola\Http\Factory\RequestFactory;
+use Tuupola\Http\Factory\StreamFactory;
 use Whereami\Exception\NotFoundException;
 use Whereami\Exception\BadRequestException;
 use Whereami\Factory\HttpClientFactory;
@@ -33,19 +34,20 @@ abstract class AbstractProvider implements Provider
     public function __construct(
         $apikey,
         HttpClient $httpClient = null,
-        RequestFactory $requestFactory = null
+        RequestFactory $requestFactory = null,
+        StreamFactory $streamFactory = null
     ) {
         $this->apikey = $apikey;
         $this->httpClient = $httpClient ?: (new HttpClientFactory)->create();
-        $this->requestFactory = $requestFactory ?: MessageFactoryDiscovery::find();
+        $this->requestFactory = $requestFactory ?: new RequestFactory;
+        $this->streamFactory = $streamFactory ?: new StreamFactory;
     }
 
     public function process(array $data, array $options = [])
     {
         $endpoint = $this->endpoint();
-        $headers = [];
-        $body = $this->transform($data);
-        $request = $this->requestFactory->createRequest("POST", $endpoint, $headers, $body);
+        $body = $this->streamFactory->createStream($this->transform($data));
+        $request = $this->requestFactory->createRequest("POST", $endpoint)->withBody($body);
         $response = $this->httpClient->sendRequest($request);
 
         if ($response->getStatusCode() >= 400 && $response->getStatusCode() < 600) {
