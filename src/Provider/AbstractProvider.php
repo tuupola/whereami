@@ -28,8 +28,9 @@ use Whereami\Provider;
 abstract class AbstractProvider implements Provider
 {
     protected $apikey;
-    private $httpClient;
-    private $requestFactory;
+    protected $httpClient;
+    protected $requestFactory;
+    protected $streamFactory;
 
     public function __construct(
         $apikey,
