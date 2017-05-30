@@ -4,6 +4,10 @@ All notable changes to this project will be documented in this file, in reverse 
 
 ## 0.3.0 - unreleased
 
+### Added
+
+- Support for Google browserlocation API
+
 ### Changed
 
 - Provider now thrown exception if location was not found.

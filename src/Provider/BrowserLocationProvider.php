@@ -17,7 +17,7 @@ namespace Whereami\Provider;
 
 use Whereami\Provider;
 
-final class BrowserLocationProvider extends AbstractProvider implements Provider
+final class BrowserlocationProvider extends AbstractProvider implements Provider
 {
     protected $endpoint = "https://maps.googleapis.com/maps/api/browserlocation/json";
 

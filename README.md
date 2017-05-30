@@ -120,7 +120,7 @@ use Whereami\Provider\CombainProvider;
 $provider = new CombainProvider("your-api-key-here");
 ```
 
-### Google Provider
+### Google Geolocation Provider
 
 This provider uses [The Google Maps Geolocation API](https://developers.google.com/maps/documentation/geolocation/intro). You will need an [API key](https://developers.google.com/maps/documentation/geolocation/get-api-key). There are some [limits on free usage](https://developers.google.com/maps/documentation/geolocation/usage-limits).
 
@@ -128,6 +128,16 @@ This provider uses [The Google Maps Geolocation API](https://developers.google.c
 use Whereami\Provider\GoogleProvider;
 
 $provider = new GoogleProvider("your-api-key-here");
+```
+
+### Google Browserlocation Provider
+
+This provider uses old undocumented browserlocation API. It does not require API key.
+
+```php
+use Whereami\Provider\BrowserlocationProvider;
+
+$provider = new BrowserlocationProvider(null);
 ```
 
 ### Mozilla Provider
