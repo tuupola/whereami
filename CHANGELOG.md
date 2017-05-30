@@ -4,9 +4,10 @@ All notable changes to this project will be documented in this file, in reverse 
 
 ## 0.3.0 - unreleased
 
-### Changer
+### Changed
 
 - Provider now thrown exception if location was not found.
+- Use PSR-17 HTTP factories instead of HTTPlug internal versions
 
 ## 0.2.0 - 2017-04-16
 
