@@ -28,6 +28,7 @@ use Whereami\Provider;
 abstract class AbstractProvider implements Provider
 {
     protected $apikey;
+    private $response;
     private $httpClient;
     private $requestFactory;
 
@@ -48,13 +49,18 @@ abstract class AbstractProvider implements Provider
         $body = $this->transform($data);
         $request = $this->requestFactory->createRequest("POST", $endpoint, $headers, $body);
         $request = $this->addRequestHeaders($request);
-        $response = $this->httpClient->sendRequest($request);
+        $this->response = $this->httpClient->sendRequest($request);
 
-        if ($response->getStatusCode() >= 400 && $response->getStatusCode() < 600) {
-            $this->handleError($response);
+        if ($this->response->getStatusCode() >= 400 && $this->response->getStatusCode() < 600) {
+            $this->handleError($this->response);
         }
 
-        return $this->parse((string) $response->getBody());
+        return $this->parse((string) $this->response->getBody());
+    }
+
+    public function lastResponse()
+    {
+        return $this->response;
     }
 
     protected function handleError(ResponseInterface $response)
