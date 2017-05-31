@@ -30,8 +30,9 @@ abstract class AbstractProvider implements Provider
 {
     protected $apikey;
     private $response;
-    private $httpClient;
-    private $requestFactory;
+    protected $httpClient;
+    protected $requestFactory;
+    protected $streamFactory;
 
     public function __construct(
         $apikey,
