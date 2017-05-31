@@ -20,7 +20,7 @@ use Whereami\Provider\EmulatedProvider;
 
 class Whereami
 {
-    const VERSION = "0.3.0-dev";
+    const VERSION = "0.3.0";
 
     private $provider;
     private $scanner;
