@@ -28,8 +28,9 @@ use Whereami\Provider;
 abstract class AbstractProvider implements Provider
 {
     protected $apikey;
-    private $httpClient;
-    private $requestFactory;
+    protected $httpClient;
+    protected $requestFactory;
+    protected $streamFactory;
 
     public function __construct(
         $apikey,
@@ -65,7 +66,6 @@ abstract class AbstractProvider implements Provider
         $data = json_decode((string) $response->getBody(), true);
         throw new BadRequestException($data["error"]["message"]);
     }
-
 
     protected function endpoint()
     {
