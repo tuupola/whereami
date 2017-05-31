@@ -18,6 +18,7 @@ namespace Whereami;
 use Http\Mock\Client as MockClient;
 use PHPUnit\Framework\TestCase;
 use Whereami\Exception\NotFoundException;
+use Whereami\Exception\BadRequestException;
 use Whereami\Factory\HttpClientFactory;
 use Whereami\Provider\BrowserlocationProvider;
 use Zend\Diactoros\Response;
@@ -65,6 +66,25 @@ class BrowserlocationProviderTest extends TestCase
         $stream->write('{"accuracy" : 16280, "location" : {"lat": 1.358496, ');
         $stream->write('"lng": 103.98983469999999}, "status" : "OK" }');
         $response = new Response($stream, 200);
+
+        $mockClient = new MockCLient;
+        $mockClient->addResponse($response);
+        $httpClient = (new HttpClientFactory($mockClient))->create();
+
+        $networks = file_get_contents(__DIR__ . "/changi.json");
+        $networks = json_decode($networks, true);
+
+        $location = (new BrowserlocationProvider("fakekey", $httpClient))->process($networks);
+    }
+
+
+    public function testShouldThrowBadRequestException()
+    {
+        $this->expectException(BadRequestException::class);
+
+        $stream = new Stream("php://memory", "rb+");
+        $stream->write('{"status" : "INVALID_REQUEST"}');
+        $response = new Response($stream, 400);
 
         $mockClient = new MockCLient;
         $mockClient->addResponse($response);

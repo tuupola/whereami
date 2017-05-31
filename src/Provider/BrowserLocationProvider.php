@@ -15,7 +15,9 @@
 
 namespace Whereami\Provider;
 
+use Psr\Http\Message\ResponseInterface;
 use Whereami\Provider;
+use Whereami\Exception\BadRequestException;
 use Whereami\Exception\NotFoundException;
 
 final class BrowserlocationProvider extends AbstractProvider implements Provider
@@ -59,6 +61,15 @@ final class BrowserlocationProvider extends AbstractProvider implements Provider
             "longitude" => (float) $data["location"]["lng"],
             "accuracy" => (integer) $data["accuracy"],
         ];
+    }
+
+    protected function handleError(ResponseInterface $response)
+    {
+        if (404 === $response->getStatusCode()) {
+            throw new NotFoundException("No matches found", 404);
+        }
+        $data = json_decode((string) $response->getBody(), true);
+        throw new BadRequestException($data["status"]);
     }
 
     protected function endpoint()

@@ -67,7 +67,6 @@ abstract class AbstractProvider implements Provider
         throw new BadRequestException($data["error"]["message"]);
     }
 
-
     protected function endpoint()
     {
         return $this->endpoint .= "?" . http_build_query(["key" => $this->apikey]);
