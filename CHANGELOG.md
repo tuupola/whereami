@@ -2,6 +2,8 @@
 
 All notable changes to this project will be documented in this file, in reverse chronological order by release.
 
+## 0.4.0-dev - unreleased
+
 ## 0.3.0 - 2017-05-31
 
 ### Added
