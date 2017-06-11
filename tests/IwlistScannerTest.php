@@ -16,7 +16,7 @@
 namespace Whereami;
 
 use PHPUnit\Framework\TestCase;
-use Whereami\Scanner\IwListScanner;
+use Whereami\Scanner\IwlistScanner;
 
 class IwListScannerTest extends TestCase
 {
@@ -28,7 +28,7 @@ class IwListScannerTest extends TestCase
     public function testShouldScanAndParse()
     {
         $command = "/bin/cat " . __DIR__ . "/iwlist.txt";
-        $result = (new IwListScanner($command))->scan();
+        $result = (new IwlistScanner($command))->scan();
         $this->assertEquals(17, count($result));
         $this->assertEquals("TRENDnet 712", $result[5]["name"]);
         $this->assertEquals("D8:EB:97:17:EB:8F", $result[5]["address"]);
