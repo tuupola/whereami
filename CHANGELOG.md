@@ -4,6 +4,8 @@ All notable changes to this project will be documented in this file, in reverse 
 
 ## 0.4.0-dev - unreleased
 
+- Support for [Radiocells Network Geolocation Services API](https://radiocells.org/geolocation).
+
 ## 0.3.0 - 2017-05-31
 
 ### Added

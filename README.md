@@ -150,6 +150,16 @@ use Whereami\Provider\MozillaProvider;
 $provider = new MozillaProvider("your-api-key-here");
 ```
 
+### Radiocells Provider
+
+This provider uses [Radiocells Network Geolocation Services API](https://radiocells.org/geolocation). It is free to use and does not require an API key.
+
+```php
+use Whereami\Provider\RadiocellsProvider;
+
+$provider = new RadiocellsProvider(null);
+```
+
 ### Unwired Provider
 
 This provider uses [Unwired Labs LocationAPI](https://unwiredlabs.com/locationapi). API key is required but you can sign up for [free developer account](https://unwiredlabs.com/trial).
