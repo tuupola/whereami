@@ -18,6 +18,7 @@ namespace Whereami\Provider;
 use Http\Client\HttpClient;
 use Interop\Http\Factory\RequestFactoryInterface;
 use Psr\Http\Message\ResponseInterface;
+use Psr\Http\Message\RequestInterface;
 use Tuupola\Http\Factory\RequestFactory;
 use Tuupola\Http\Factory\StreamFactory;
 use Whereami\Exception\NotFoundException;
@@ -28,6 +29,7 @@ use Whereami\Provider;
 abstract class AbstractProvider implements Provider
 {
     protected $apikey;
+    private $response;
     protected $httpClient;
     protected $requestFactory;
     protected $streamFactory;
@@ -47,15 +49,22 @@ abstract class AbstractProvider implements Provider
     public function process(array $data, array $options = [])
     {
         $endpoint = $this->endpoint();
+
         $body = $this->streamFactory->createStream($this->transform($data));
         $request = $this->requestFactory->createRequest("POST", $endpoint)->withBody($body);
-        $response = $this->httpClient->sendRequest($request);
+        $request = $this->addRequestHeaders($request);
+        $this->response = $this->httpClient->sendRequest($request);
 
-        if ($response->getStatusCode() >= 400 && $response->getStatusCode() < 600) {
-            $this->handleError($response);
+        if ($this->response->getStatusCode() >= 400 && $this->response->getStatusCode() < 600) {
+            $this->handleError($this->response);
         }
 
-        return $this->parse((string) $response->getBody());
+        return $this->parse((string) $this->response->getBody());
+    }
+
+    public function lastResponse()
+    {
+        return $this->response;
     }
 
     protected function handleError(ResponseInterface $response)
@@ -65,6 +74,13 @@ abstract class AbstractProvider implements Provider
         }
         $data = json_decode((string) $response->getBody(), true);
         throw new BadRequestException($data["error"]["message"]);
+    }
+
+    protected function addRequestHeaders(RequestInterface $request)
+    {
+        return $request
+            ->withHeader("Accept", "application/json")
+            ->withHeader("Content-Type", "application/json; charset=utf-8");
     }
 
     protected function endpoint()

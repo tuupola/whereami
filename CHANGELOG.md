@@ -11,6 +11,11 @@ All notable changes to this project will be documented in this file, in reverse 
 ### Added
 - Support for Google browserlocation API
 
+### Added
+
+- Support for Apple location services
+- Support for nyholm/psr7.
+
 ### Changed
 - Provider now throws exception if location was not found.
 - Use PSR-17 HTTP factories instead of HTTPlug internal versions
