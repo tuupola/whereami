@@ -2,6 +2,10 @@
 
 All notable changes to this project will be documented in this file, in reverse chronological order by release.
 
+## 0.5.0 - unreleased
+### Changed
+- Updated [tuupola/http-factory](https://github.com/tuupola/http-factory) to 0.3.0.
+
 ## 0.4.0 - 2017-06-11
 ### Added
 
