@@ -2,16 +2,16 @@
 
 All notable changes to this project will be documented in this file, in reverse chronological order by release.
 
-## 0.5.0 - unreleased
+## [0.4.1](https://github.com/tuupola/whereami/compare/0.4.0...0.4.1) - 2017-12-06
 ### Changed
 - Updated [tuupola/http-factory](https://github.com/tuupola/http-factory) to 0.3.0.
 
-## 0.4.0 - 2017-06-11
+## [0.4.0](https://github.com/tuupola/whereami/compare/0.3.0...0.4.0) - 2017-06-11
 ### Added
 
 - Support for [Radiocells Network Geolocation Services API](https://radiocells.org/geolocation).
 
-## 0.3.0 - 2017-05-31
+## [0.3.0](https://github.com/tuupola/whereami/compare/0.2.0...0.3.0) - 2017-05-31
 ### Added
 - Support for Google browserlocation API
 
